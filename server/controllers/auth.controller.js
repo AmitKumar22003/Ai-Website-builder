@@ -41,6 +41,7 @@ export const logOut = async (req, res) => {
       sameSite: "strict",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: `log out error ${error}` });
   }
 };
