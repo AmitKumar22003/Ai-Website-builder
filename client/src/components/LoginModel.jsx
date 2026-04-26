@@ -2,25 +2,30 @@ import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
-import axios from "axios"
+import axios from "axios";
 import { serverUrl } from "../App";
 
-
 function LoginModal({ open, onClose }) {
-
-  const handleGoogleAuth=async ()=>{
+  const handleGoogleAuth = async () => {
     try {
-      const result=await signInWithPopup(auth,provider)
-      const {data}=await axios.post(`${serverUrl}/api/auth/google`,{
-        name:result.user.displayName,
-        email:result.user.email,
-        atar:result.user.photoURL
-      },{withCredentials:true})
-      console.log(data)
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const { data } = await axios.post(
+        `${serverUrl}/api/auth/google`,
+        {
+          name: user.displayName || "User",
+          email: user.email || "",
+          avatar: user.photoURL || "",
+        },
+        { withCredentials: true },
+      );
+
+      console.log(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <AnimatePresence>
       {open && (
@@ -74,7 +79,6 @@ function LoginModal({ open, onClose }) {
                   onClick={handleGoogleAuth}
                   className="group relative w-full h-13 rounded-xl bg-white text-black font-semibold shadow-xl overflow-hidden"
                 >
-
                   <div className="relative flex items-center justify-center gap-3">
                     <img
                       src="https://www.svgrepo.com/show/303108/google-icon-logo.svg"
@@ -85,15 +89,21 @@ function LoginModal({ open, onClose }) {
                   </div>
                 </motion.button>
                 <div className="flex items-center gap-4 my-10">
-                  <div className="h-1px flex-1 bg-white/10"/>
-                  <span className="text-xs text-zinc-500 tracking-wide">Secure Login</span>
-                  <div className="h-1px flex-1 bg-white/10"/>
+                  <div className="h-1px flex-1 bg-white/10" />
+                  <span className="text-xs text-zinc-500 tracking-wide">
+                    Secure Login
+                  </span>
+                  <div className="h-1px flex-1 bg-white/10" />
                 </div>
                 <p className="text-xs text-zinc-500 leading-relaxed">
                   By continuing, you agree to our{" "}
-                  <span className="underline cursor-pointer hover:text-zinc-300">Terms of Services</span>{" "}
+                  <span className="underline cursor-pointer hover:text-zinc-300">
+                    Terms of Services
+                  </span>{" "}
                   and{" "}
-                  <span className="underline cursor-pointer hover:text-zinc-300">Privacy Policy</span>
+                  <span className="underline cursor-pointer hover:text-zinc-300">
+                    Privacy Policy
+                  </span>
                 </p>
               </div>
             </div>

@@ -1,8 +1,8 @@
 import express from "express"
-import { googelAuth, logOut } from "../controllers/auth.controller.js"
+import { googleAuth, logOut } from "../controllers/auth.controller.js"
 const authRouter=express.Router()
  
-authRouter.post("/googel", googelAuth)
+authRouter.post("/google", googleAuth)
 authRouter.post("/logout", logOut)
 
 

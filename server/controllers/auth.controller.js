@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
-export const googelAuth = async (req, res) => {
+export const googleAuth = async (req, res) => {
   try {
     const { name, email, avatar } = req.body;
 
@@ -29,6 +29,7 @@ export const googelAuth = async (req, res) => {
     });
     return res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: `google auth error ${error}` });
   }
 };

@@ -6,14 +6,8 @@ function Home() {
     "AI generated Code",
     "Fully Responsive Layouts",
     "Production Reddy Output",
-  ]
-const [openLogin,setOpenLogin]=useState(false)
-
-
-
-
-
-
+  ];
+  const [openLogin, setOpenLogin] = useState(false);
   return (
     <div className="relative min-h-screen bg-[#040404] text-white">
       <motion.div
@@ -29,10 +23,10 @@ const [openLogin,setOpenLogin]=useState(false)
               Pricing
             </div>
 
-
-            <button className="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
-            onClick={()=>setOpenLogin(true)} 
-            > 
+            <button
+              className="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/10 text-sm"
+              onClick={() => setOpenLogin(true)}
+            >
               Get Started
             </button>
           </div>
@@ -68,10 +62,11 @@ const [openLogin,setOpenLogin]=useState(false)
       <section className="max-w-7xl mx-auto px-6 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {highlights.map((h, i) => (
-            <motion.div key={i}
-            initial={{opacity:0,u:40}}
-            whileInView={{opacity:1,y:0}}
-            className="rounded-2xl bg-white/5 border border-white/10 p-8 "
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, u: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="rounded-2xl bg-white/5 border border-white/10 p-8 "
             >
               <h1 className="text-xl font-semibold mb-3">{h}</h1>
               <p className="text-sm text-zinc-400">
@@ -82,16 +77,16 @@ const [openLogin,setOpenLogin]=useState(false)
           ))}
         </div>
       </section>
-      
 
       <footer className="border-t border-white/10 py-10 text-center text-sm text-zinc-500">
         &copy;{new Date().getFullYear()} GenWeb.ai
       </footer>
 
-      {openLogin&&<LoginModel open={openLogin} onClose={()=>setOpenLogin(false)}/> }
+      {openLogin && (
+        <LoginModel open={openLogin} onClose={() => setOpenLogin(false)} />
+      )}
     </div>
   );
 }
 
 export default Home;
-
