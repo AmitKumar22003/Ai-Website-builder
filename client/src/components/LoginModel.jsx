@@ -8,7 +8,7 @@ import { serverUrl } from "../App";
 function LoginModal({ open, onClose }) {
   const handleGoogleAuth = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth,provider);
       const user = result.user;
 
       const { data } = await axios.post(
@@ -20,7 +20,6 @@ function LoginModal({ open, onClose }) {
         },
         { withCredentials: true },
       );
-
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -89,11 +88,11 @@ function LoginModal({ open, onClose }) {
                   </div>
                 </motion.button>
                 <div className="flex items-center gap-4 my-10">
-                  <div className="h-1px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-white/10" />
                   <span className="text-xs text-zinc-500 tracking-wide">
                     Secure Login
                   </span>
-                  <div className="h-1px flex-1 bg-white/10" />
+                  <div className="h-px flex-1 bg-white/10" />
                 </div>
                 <p className="text-xs text-zinc-500 leading-relaxed">
                   By continuing, you agree to our{" "}
