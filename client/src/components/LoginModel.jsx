@@ -4,23 +4,27 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import axios from "axios";
 import { serverUrl } from "../App";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 function LoginModal({ open, onClose }) {
+  const dispatch=useDispatch()
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth,provider);
       const user = result.user;
 
-      const { data } = await axios.post(
-        `${serverUrl}/api/auth/google`,
+      const { data } = await axios.post(`${serverUrl}/api/auth/google`,
         {
           name: user.displayName || "User",
           email: user.email || "",
           avatar: user.photoURL || "",
         },
-        { withCredentials: true },
-      );
-      console.log(data);
+
+        { withCredentials: true }
+      )
+     dispatch(setUserData(data))
+     onClose()
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +33,7 @@ function LoginModal({ open, onClose }) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-xl px-4"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-xl px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -40,7 +44,7 @@ function LoginModal({ open, onClose }) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 40 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
-            className="relative w-full max-w-md p-[1px] rounded-3xl bg-gradient-to-br from-purple-500/40 via-blue-500/30 to-transparent"
+            className="relative w-full max-w-md p-px rounded-3xl bg-linear-to-br from-purple-500/40 via-blue-500/30 to-transparent"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative rounded-3xl bg-[#0b0b0b] border border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.8)] overflow-hidden ">
