@@ -1,0 +1,21 @@
+function LoginModal({ open, onClose }) {
+  const handleGoogleAuth = async () => {
+    try {
+      const result = await signInWithPopup(auth,provider);
+      const user = result.user;
+
+      const { data } = await axios.post(
+        `${serverUrl}/api/auth/google`,
+        {
+          name: user.displayName || "User",
+          email: user.email || "",
+          avatar: user.photoURL || "",
+        },
+        { withCredentials: true },
+      );
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
