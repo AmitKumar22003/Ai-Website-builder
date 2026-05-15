@@ -48,11 +48,13 @@ const websiteSchema = new mongoose.Schema(
     slug: {
       type: String,
       unique: true,
+      sparse: true,
     },
   },
   { timestamps: true },
 );
 
-const Website = mongoose.model("Website", websiteSchema);
+const Website =
+  mongoose.models.Website || mongoose.model("Website", websiteSchema);
 
 export default Website;
