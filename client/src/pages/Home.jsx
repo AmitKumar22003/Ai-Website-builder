@@ -8,6 +8,7 @@ import { setUserData } from "../redux/userSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 function Home() {
   const highlights = [
     "AI generated Code",
@@ -72,8 +73,9 @@ function Home() {
                   <img
                     src={
                       userData.avatar ||
-                      `https://ui-avatars.com/api/?name=${userData.name}`
+                      `https://ui-avatars.com/api/?name=${userData.name}` 
                     }
+                    referrerPolicy="no-referrer"
                     alt={userData.name}
                     className="w-9 h-9 rounded-full border border-white/20 object-cover"
                   />
@@ -101,7 +103,10 @@ function Home() {
                         <span>{userData.credits}</span>
                         <span className="font-semibold">+</span>
                       </button>
-                      <button className="w-full px-4 py-3 text-left text-sm hover:bg-white/5" onClick={()=>navigate("/dashboard")}>
+                      <button
+                        className="w-full px-4 py-3 text-left text-sm hover:bg-white/5"
+                        onClick={() => navigate("/dashboard")}
+                      >
                         Dashboard
                       </button>
                       <button
@@ -141,8 +146,11 @@ function Home() {
           production-ready website.
         </motion.p>
 
-        <button className="mt-12 px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition" onClick={()=>navigate("/dashboard")}>
-          {userData?"Go to dashboard": "Get Started"}
+        <button
+          className="mt-12 px-10 py-4 rounded-xl bg-white text-black font-semibold hover:scale-105 transition"
+          onClick={() => navigate("/dashboard")}
+        >
+          {userData ? "Go to dashboard" : "Get Started"}
         </button>
       </section>
 

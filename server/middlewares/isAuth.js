@@ -11,16 +11,9 @@ const isAuth = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log("DECODED TOKEN:", decoded);
-
-    const user = await User.findById(
-      decoded.id || decoded._id
-    );
+    const user = await User.findById(decoded.id || decoded._id);
 
     if (!user) {
       return res.status(401).json({
@@ -34,7 +27,7 @@ const isAuth = async (req, res, next) => {
   } catch (error) {
     console.log("AUTH ERROR:", error);
 
-    return res.status(500).json({
+    return res.status(401).json({
       message: "Invalid token",
     });
   }

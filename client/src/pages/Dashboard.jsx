@@ -1,12 +1,34 @@
 import { ArrowLeft } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { serverUrl } from "../App";
 function Dashboard() {
   const { userData } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const [websites, setWebsites] = useState([null]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const handleGetAllWebsites = async () => {
+      setLoading(true);
+      try {
+        const result = await axios.get(`${serverUrl}/api/website/get-all`, {
+          withCredentials: true,
+        });
+        setWebsites(result.data || []);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setError(error.response.data.message);
+        setLoading(false);
+      }
+    };
+    handleGetAllWebsites();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
@@ -43,6 +65,22 @@ function Dashboard() {
 
           <h1 className="text-3xl font-bold">{userData?.name}</h1>
         </motion.div>
+
+        {loading && (
+          <div className="mt-24 text-center text-zinc-400 ">
+            Loading Your Websites...
+          </div>
+        )}
+
+        {error && !loading && (
+          <div className="mt-24 text-center text-red-400 ">{error}</div>
+        )}
+
+        {websites?.length == 0 && (
+          <div className="mt-24 text-center text-zinc-400 ">
+            You have no Websites
+          </div>
+        )}
       </div>
     </div>
   );

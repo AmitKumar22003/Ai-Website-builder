@@ -20,13 +20,6 @@ function Generate() {
       console.log(result);
     } catch (error) {
       console.log(error);
-      /* console.log("ERROR:", error);
-
-      console.log("RESPONSE:", error.response);
-
-      console.log("DATA:", error.response?.data);
-
-      console.log("MESSAGE:", error.message); */
     }
   };
 
