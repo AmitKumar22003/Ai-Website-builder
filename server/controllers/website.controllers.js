@@ -115,16 +115,13 @@ export const generateWebsite = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({
-        message: "user not found",
+        message: "User not found",
       });
     }
 
-    // user.credits = 500;
-    // await user.save();
-
     if (user.credits < 50) {
       return res.status(400).json({
-        message: "you have not enough credits to generate a website",
+        message: "You do not have enough credits to generate a website",
       });
     }
 
@@ -184,7 +181,7 @@ export const generateWebsite = async (req, res) => {
       ],
     });
 
-    user.credits = user.credits - 50;
+    user.credits -= 50;
 
     await user.save();
 
@@ -203,21 +200,31 @@ export const generateWebsite = async (req, res) => {
 
 export const getWebsiteById = async (req, res) => {
   try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Website id is required",
+      });
+    }
+
     const website = await Website.findOne({
-      _id: req.params.id,
+      _id: id,
       user: req.user._id,
     });
 
     if (!website) {
-      return res.status(400).json({
-        message: "website not found",
+      return res.status(404).json({
+        message: "Website not found",
       });
     }
 
     return res.status(200).json(website);
   } catch (error) {
+    console.log("GET WEBSITE ERROR:", error);
+
     return res.status(500).json({
-      message: error.message || "generate website by id error",
+      message: error.message || "get website by id error",
     });
   }
 };
@@ -226,6 +233,14 @@ export const changes = async (req, res) => {
   try {
     const { prompt } = req.body;
 
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Website id is required",
+      });
+    }
+
     if (!prompt) {
       return res.status(400).json({
         message: "Prompt is required",
@@ -233,13 +248,13 @@ export const changes = async (req, res) => {
     }
 
     const website = await Website.findOne({
-      _id: req.params.id,
+      _id: id,
       user: req.user._id,
     });
 
     if (!website) {
-      return res.status(400).json({
-        message: "website not found",
+      return res.status(404).json({
+        message: "Website not found",
       });
     }
 
@@ -247,13 +262,13 @@ export const changes = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({
-        message: "user not found",
+        message: "User not found",
       });
     }
 
     if (user.credits < 25) {
       return res.status(400).json({
-        message: "you have not enough credits to generate a website",
+        message: "You do not have enough credits to update website",
       });
     }
 
@@ -323,7 +338,7 @@ RETURN RAW JSON ONLY:
 
     await website.save();
 
-    user.credits = user.credits - 25;
+    user.credits -= 25;
 
     await user.save();
 
@@ -345,10 +360,14 @@ export const getAll = async (req, res) => {
   try {
     const websites = await Website.find({
       user: req.user._id,
+    }).sort({
+      updatedAt: -1,
     });
 
     return res.status(200).json(websites);
   } catch (error) {
+    console.log("GET ALL WEBSITES ERROR:", error);
+
     return res.status(500).json({
       message: error.message || "get all websites error",
     });
