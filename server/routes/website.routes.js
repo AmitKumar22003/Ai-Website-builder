@@ -4,6 +4,7 @@ import isAuth from "../middlewares/isAuth.js";
 
 import {
   changes,
+  deploy,
   generateWebsite,
   getAll,
   getWebsiteById,
@@ -18,5 +19,6 @@ websiteRouter.post("/update/:id", isAuth, changes);
 websiteRouter.get("/get-by-id/:id", isAuth, getWebsiteById);
 
 websiteRouter.get("/get-all", isAuth, getAll);
+websiteRouter.get("/deploy", isAuth, deploy);
 
 export default websiteRouter;
