@@ -7,10 +7,10 @@ import { serverUrl } from "../App";
 
 function Generate() {
   const navigate = useNavigate();
-
   const [prompt, setPrompt] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const handleGenerateWebsite = async () => {
+    setLoading(true);
     try {
       const result = await axios.post(
         `${serverUrl}/api/website/generate`,
@@ -18,7 +18,10 @@ function Generate() {
         { withCredentials: true },
       );
       console.log(result);
+      setLoading(false);
+      navigate(`/editor/${result.data.websiteId}`);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -88,7 +91,11 @@ function Generate() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               onClick={handleGenerateWebsite}
-              className="px-14 py-4 rounded-2xl font-semibold text-lg bg-white text-black hover:bg-zinc-200 transition"
+              className={`px-14 py-4 rounded-2xl font-semibold text-lg ${
+                prompt.trim() && !loading
+                  ? "bg-white text-black"
+                  : "bg-white/20 text-zinc-400 cursor-not-allowed"
+              }`}
             >
               Generate Website
             </motion.button>
